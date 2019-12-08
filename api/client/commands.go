@@ -1186,11 +1186,13 @@ func (cli *DockerCli) CmdPull(args ...string) error {
 	if err := cmd.Parse(args); err != nil {
 		return nil
 	}
-
+	// cmd.NArg长度不为1，说明此次命令需要pull多个镜像或者是没指定镜像，此方法仅支持pull一个镜像
 	if cmd.NArg() != 1 {
 		cmd.Usage()
 		return nil
 	}
+	// 创建一个 map 类型的变量 v，该变量用于存放下拉镜像时所需的 URL 参数;
+	// 随后将参数 列表的第一个值 cmd.Arg(0) 赋给 remote 变量，并将 remote 作为键将 fromImage 的值添加至 v。
 	var (
 		v      = url.Values{}
 		remote = cmd.Arg(0)
